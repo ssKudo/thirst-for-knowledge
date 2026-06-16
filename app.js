@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDopamineMeter();
     }
 
+    const mainLayout = document.querySelector('.main-layout');
+
     // Client-side Router
     function handleRouting() {
         const hash = window.location.hash || '#/';
@@ -54,12 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hash.startsWith('#/post/')) {
             const postId = hash.replace('#/post/', '');
             renderPostDetail(postId);
+            if (mainLayout) mainLayout.classList.add('post-view-active');
         } else {
             renderPostList();
+            if (mainLayout) mainLayout.classList.remove('post-view-active');
         }
         
-        // Reset scroll position on route change
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Reset scroll position instantly on route change to prevent visual confusion
+        window.scrollTo(0, 0);
     }
 
     // Render Grid View

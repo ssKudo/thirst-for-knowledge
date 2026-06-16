@@ -528,3 +528,27 @@ body {
     width: 0%;
     transition: width 0.1s ease-out;
 }
+
+/* Post View Active Layout (Full width article, sidebar wrapping to bottom) */
+.post-view-active {
+    grid-template-columns: 1fr !important;
+}
+
+.post-view-active .content-area {
+    order: 1;
+}
+
+.post-view-active .sidebar {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+/* Ensure mobile styling remains consistent */
+@media (max-width: 850px) {
+    .post-view-active .sidebar {
+        grid-template-columns: 1fr;
+    }
+}
