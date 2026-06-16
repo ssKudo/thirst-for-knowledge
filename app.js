@@ -177,6 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const topScrollIndicator = document.getElementById('top-scroll-indicator');
+
     // Scroll Tracker for Dopamine Meter
     function updateDopamineMeter() {
         const scrollTop = window.scrollY;
@@ -187,8 +189,15 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollPercent = Math.min(Math.round((scrollTop / docHeight) * 100), 100);
         }
 
-        dopamineBar.style.width = `${scrollPercent}%`;
-        dopaminePercent.innerText = `${scrollPercent}%`;
+        if (dopamineBar) {
+            dopamineBar.style.width = `${scrollPercent}%`;
+        }
+        if (dopaminePercent) {
+            dopaminePercent.innerText = `${scrollPercent}%`;
+        }
+        if (topScrollIndicator) {
+            topScrollIndicator.style.width = `${scrollPercent}%`;
+        }
 
         // Update dopamine status message based on scroll level
         if (scrollPercent >= 100) {
