@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thirst-for-knowledge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="thirst-for-knowledge - Cyber-brain information and news archive.">
+</head>
+<body>
+    <!-- Cyberpunk grid background & scanning lines -->
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <a href="#/" class="logo-link">
+                    <span class="logo-glow">THIRST-FOR-KNOWLEDGE</span>
+                    <span class="logo-cursor"></span>
+                </a>
+            </div>
+            <div class="header-tagline">// BRAIN_FEED_DATA_STREAM</div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="section-title">SEARCH_SYSTEM</h3>
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Keyword..." autocomplete="off">
+                        <div class="search-glow"></div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="section-title">TAG_FILTER</h3>
+                    <div id="tags-container" class="tags-list">
+                        <!-- Tags loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section dopamine-widget">
+                    <h3 class="section-title">DOPAMINE_METER</h3>
+                    <div class="dopamine-progress-container">
+                        <div class="dopamine-bar" id="dopamine-bar"></div>
+                        <div class="dopamine-percent" id="dopamine-percent">0%</div>
+                    </div>
+                    <div class="dopamine-status" id="dopamine-status">STATUS: CALM</div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content-area" id="main-content">
+                <!-- Content loaded dynamically -->
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 thirst-for-knowledge. Connection Established.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
