@@ -1,5 +1,18 @@
 [
   {
+    "id": "firebase-hosting-routing-incident",
+    "title": "【障害実録】Firebase Hostingの配信仕様に起因するアセット配信エラーと検証プロトコル",
+    "date": "2026-06-17",
+    "tags": [
+      "Firebase",
+      "Web",
+      "Troubleshooting"
+    ],
+    "thumbnail": "images/firebase_hosting_error.jpg",
+    "summary": "Firebase Hostingにおける物理ファイル優先ルーティング仕様とSPA設定の組み合わせによる、アセット読み込み不具合（MIMEタイプ誤認識）の発生事実、経緯、およびcurlを用いた検証プロトコルについての淡々とした記録。",
+    "content": "## 1. 発生事象 (Fact)\nSPA（Single Page Application）のデプロイ後、一部のユーザーにおいて静的アセット（JS / CSSファイル）のロードエラーが発生し、画面がブランク（白化）する現象が発生した。\n検証の結果、以下の事実が確認された。\n\n1. **ブラウザ側のエラー**: `MIME type ('text/html') is not executable...` または CSSファイルの読み込みにおいて `Content-Type` 不一致によるロードブロック。\n2. **挙動の違い**: `curl` コマンドでアセットのURLに対して直接リクエストを送信すると `200 OK` が返るにもかかわらず、特定のブラウザ環境においてのみ配信に失敗する。\n\n---\n\n## 2. 原因分析 (Analysis)\nFirebase Hostingにおける**ルーティングの優先順位**および**キャッシュ仕様**が原因であった。\n\n### 2.1. ルーティング優先順位の仕様\nFirebase Hostingは、リクエストを受信した際、以下の順番で処理を決定する。\n1. **物理ファイル探索**: リクエストされたパスに一致するファイルが、公開ディレクトリ（`dist/` など）内に存在するかを判定。存在すればそれをそのまま返す。\n2. **Rewrite（リライト）ルールの適用**: 物理ファイルが存在しない場合のみ、`firebase.json` で定義された `rewrites`（例: 全てを `/index.html` に向けるSPA設定）を適用する。\n\n### 2.2. トラブルの変遷\n1. デプロイエラー、またはビルド設定の不一致により、最新のハッシュ付きアセットファイル（例: `index.abcdef.js`）が物理的に公開ディレクトリに配置されなかった。\n2. ブラウザがそのアセット（`/assets/index.abcdef.js`）を要求したが、物理ファイルが存在しなかった。\n3. Firebase Hostingは「物理ファイル無し」と判断し、SPA用の `rewrites` ルールに基づき、`/index.html`（`text/html`）を `200 OK` としてレスポンスに返した。\n4. ブラウザはJavaScriptファイルとして `text/html`（HTMLの中身）を受け取ったため、MIMEタイプエラーとなり実行をブロックした。\n5. 一方で、`curl` で検証した際、一部のテスターがリクエストパスを間違えていた、もしくはキャッシュが効いていたため、サーバー側のルーティング問題として切り分けるのに時間を要した。\n\n---\n\n## 3. 対応と検証プロトコル (Action)\n今後は同様の配信障害に対し、以下の手順で機械的に検証を実行し切り分けを行う。\n\n### Step 1. 構成と物理パスの検証\n- `firebase.json` の `\"public\"` 設定と、CI/CDで出力されるビルド先パスが完全に一致しているかをデプロイ前後に検証する。\n- 物理ファイルが実際にデプロイ対象フォルダ内に存在するかをローカル/コンテナ内でリスト取得する。\n```bash\nls -R dist/\n```\n\n### Step 2. curlによるレスポンスヘッダーの強制検証\nブラウザのキャッシュやセキュリティ制約の影響を排除し、サーバーから返る生ヘッダー（`Content-Type`、`MIME type`）をチェックする。\n```bash\ncurl -I https://<project-id>.web.app/assets/index.abcdef.js\n```\n- **期待される結果**: `Content-Type: application/javascript`\n- **障害時の結果**: `Content-Type: text/html` （物理ファイルが欠落し、リライトにより `index.html` が返されている証拠）\n\n### Step 3. キャッシュパージと検証\n- Firebase HostingのCDNキャッシュまたはブラウザの `Service Worker` キャッシュをクリアした上で、上記検証を再試行する。\n"
+  },
+  {
     "id": "google-colab-cli-release",
     "title": "【速報】Google Colab CLIが公式発表：ローカル端末からGPUリソースを直接操作可能に",
     "date": "2026-06-16",
